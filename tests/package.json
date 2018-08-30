@@ -17,5 +17,8 @@
       "server": "server/main.js"
     },
     "testModule": "tests/main.js"
+  },
+  "devDependencies": {
+    "standard": "^12.0.1"
   }
 }
