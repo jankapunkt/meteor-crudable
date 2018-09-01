@@ -1,7 +1,8 @@
 # meteor-crudable
-Configure and create CRUD methods for your collections.
 
-Example (server)
+Configure and create CRUD methods for your collections. Generated resujlts can deirectly be passed to `ValidatedMethod`.
+
+### Usage and Example
 
 ```javascript
 const TestCollection = new Mongo.Collection('testcollection')
