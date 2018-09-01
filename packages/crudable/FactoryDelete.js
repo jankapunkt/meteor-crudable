@@ -1,19 +1,16 @@
+import { Meteor } from 'meteor/meteor'
 import FactoryBase from './FactoryBase'
 
 export default class DeleteFactory extends FactoryBase {
-  constructor (options) {
-    super(options)
+  createName () {
+    return this.getMethodPrefix() + 'delete'
   }
 
-  createName() {
-    return this.getPrefix() + 'delete'
-  }
-
-  createValidate() {
+  createValidate () {
     const idField = '_id'
     const {schema} = this.props
     const {allowAll} = this.props
-    return function validate(query = {}) {
+    return function validate (query = {}) {
       const keys = Object.keys(query)
       if (keys.length === 0) {
         if (allowAll === true) {
@@ -31,10 +28,10 @@ export default class DeleteFactory extends FactoryBase {
     }
   }
 
-  createRun() {
+  createRun () {
     const {collection} = this.props
-    return function run(query = {}) {
-      return collection.delete(query)
+    return function run (query = {}) {
+      return collection.remove(query)
     }
   }
 }

@@ -1,18 +1,20 @@
+import { Meteor } from 'meteor/meteor'
 import FactoryBase from './FactoryBase'
 
 export default class UpdateFactory extends FactoryBase {
-  constructor (options) {
-    super(options)
+
+  createName () {
+    return this.getMethodPrefix() + 'update'
   }
 
-  createName() {
-    return this.getPrefix() + 'update'
-  }
-
-  createValidate() {
+  createValidate () {
     const {schema} = this.props
     const {allowAll} = this.props
-    return function validate(query, modifier) {
+    return function validate (updateDoc) {
+      const {query} = updateDoc
+      const {modifier} = updateDoc
+      const idField = '_id'
+
       if (!query || !modifier) {
         throw new Meteor.Error(400, 'Expected query and modifier.')
       }
@@ -24,13 +26,14 @@ export default class UpdateFactory extends FactoryBase {
         }
       }
 
-      function checkKeys(keys) {
+      function checkKeys (keys) {
         keys.forEach(key => {
-          if (!schema[key]) {
+          if (!schema[key] && key !== idField) {
             throw new Meteor.Error(400, `Parameter ${key} is invalid`)
           }
         })
       }
+
       checkKeys(queryKeys)
       Object.values(modifier).forEach(field => {
         checkKeys(Object.keys(field))
@@ -38,9 +41,11 @@ export default class UpdateFactory extends FactoryBase {
     }
   }
 
-  createRun() {
+  createRun () {
     const {collection} = this.props
-    return function run(query, modifier) {
+    return function run (updateDoc) {
+      const {query} = updateDoc
+      const {modifier} = updateDoc
       return collection.update(query, modifier)
     }
   }

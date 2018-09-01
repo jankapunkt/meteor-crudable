@@ -1,18 +1,19 @@
-import { Meteor } from 'meteor/meteor';
-import {Crudable} from 'meteor/jkuester:crudable'
-import {ValidatedMethod} from 'meteor/mdg:validated-method'
+import { Meteor } from 'meteor/meteor'
+import { Crudable } from 'meteor/jkuester:crudable'
+import { ValidatedMethod } from 'meteor/mdg:validated-method'
+import { TestCollection } from '../imports/api/TestCollection'
+import { Definitions } from '../imports/api/Definitions'
 
-const collection = new Mongo.Collection('testcollection')
+Meteor.publish('testcollection.all', function () {
+  return TestCollection.find()
+})
 
 Meteor.startup(() => {
   const options = {
-    collection,
-    prefix: 'crudable.methods.',
-    schema: {
-      title: String,
-      description: String
-    },
-    allowAll: true,
+    collection: TestCollection,
+    prefix: Definitions.prefix,
+    schema: TestCollection.schema,
+    allowAll: false,
     mixins: {
       roles: ['manageCollection'],
       requireAuth: true,
@@ -24,10 +25,9 @@ Meteor.startup(() => {
     }
   }
 
-
   const methods = Crudable.from(options, true)
   Object.values(methods).forEach(definitions => {
-    console.log(definitions)
-    new ValidatedMethod(definitions)
+    const method = new ValidatedMethod(definitions)
+    console.info(`[methods] registered method [${method.name}]`)
   })
-});
+})

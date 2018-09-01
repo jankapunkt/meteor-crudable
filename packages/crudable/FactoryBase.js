@@ -3,7 +3,8 @@ import { check, Match } from 'meteor/check'
 
 // MATCH HELPERS
 const itExists = x => !!x
-const itIsCollecton = c => !!c && c instanceof Mongo.Collection
+const itIsCollection = c => c instanceof Mongo.Collection
+const itMayeBeCollection = c => c ? itIsCollection(c) : true
 
 const itIsObject = o => !!o && typeof o === 'object' && typeof o !== 'function' && !Array.isArray(o) // should suffice
 const itMayBeObject = o => o ? itIsObject(o) : true
@@ -14,14 +15,16 @@ const _prefix = 'methods'
 // PRIVATE FUNCTIONS
 function checkProps (props) {
   check(props, Match.Where(itExists))
-  check(props.collection, Match.Where(itIsCollecton))
+  check(props.collection, Match.Where(itIsCollection))
   check(props.prefix, String)
 }
 
+/**
+ * Base class to be extended by class with focus for each activity of CRUD.
+ */
 export default FactoryBase = class FactoryBase {
-  constructor (options) {
-    check(options, Match.Where(itExists))
-    check(options.collection, Match.Where(itIsCollecton))
+  constructor (options = {}) {
+    check(options.collection, Match.Where(itMayeBeCollection))
     check(options.prefix, Match.Maybe(String))
     check(options.isPublic, Match.Maybe(Boolean))
     check(options.schema, Match.Where(itIsObject))
@@ -44,22 +47,25 @@ export default FactoryBase = class FactoryBase {
     // it to throw an error here
     checkProps(this.props)
 
-    const product = Object.assign({}, this.props, this.mixins)
-    product.name = this.createName()
-    product.validate = this.createValidate()
-    product.run = this.createRun()
-    return product
+    // assembe definitions
+    // using subclass methods
+    const methodDefinitions = {}
+    methodDefinitions.name = this.createName()
+    methodDefinitions.validate = this.createValidate()
+    methodDefinitions.run = this.createRun()
+
+    return Object.assign({}, this.props, this.mixins, methodDefinitions)
   }
 
-  createName() {
+  createName () {
     throw new Error('Override this function')
   }
 
-  createValidate() {
+  createValidate () {
     throw new Error('Override this function')
   }
 
-  createRun() {
+  createRun () {
     throw new Error('Override this function')
   }
 
@@ -68,7 +74,7 @@ export default FactoryBase = class FactoryBase {
   // /////////////////////////////////////////////////////////////////////////
 
   setCollection (value) {
-    check(value, Match.Where(itIsCollecton))
+    check(value, Match.Where(itIsCollection))
     this.props.collection = value
   }
 
@@ -86,10 +92,17 @@ export default FactoryBase = class FactoryBase {
   }
 
   getPrefix () {
-    const collectionName = this.props.collection.name
-    const value = this.props.prefix
-    if (value && value.length > 0) {
-      return `${value}.${collectionName}.`
+    return this.props.prefix
+  }
+
+  getMethodPrefix () {
+    const collectionName = this.props.collection._name
+    if (!collectionName) {
+      throw new Error('No Collection name found')
+    }
+    const {prefix} = this.props
+    if (prefix && prefix.length > 0) {
+      return `${prefix}.${collectionName}.`
     } else {
       return `${collectionName}.`
     }

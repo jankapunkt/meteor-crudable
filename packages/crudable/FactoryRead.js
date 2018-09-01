@@ -1,12 +1,10 @@
+import { Meteor } from 'meteor/meteor'
 import FactoryBase from './FactoryBase'
 
 export default class ReadFactory extends FactoryBase {
-  constructor (options) {
-    super(options)
-  }
 
   createName () {
-    return this.getPrefix() + 'read'
+    return this.getMethodPrefix() + 'read'
   }
 
   createValidate () {

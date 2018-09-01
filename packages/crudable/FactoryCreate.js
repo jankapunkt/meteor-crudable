@@ -1,17 +1,15 @@
+import { Meteor } from 'meteor/meteor'
 import FactoryBase from './FactoryBase'
 
 export default class CreateFactory extends FactoryBase {
-  constructor (options) {
-    super(options)
+
+  createName () {
+    return this.getMethodPrefix() + 'create'
   }
 
-  createName() {
-    return this.getPrefix() + 'create'
-  }
-
-  createValidate() {
+  createValidate () {
     const {schema} = this.props
-    return function validate(insertDoc) {
+    return function validate (insertDoc) {
       if (!insertDoc) {
         throw new Meteor.Error(400, 'Expected insert document')
       }
@@ -25,9 +23,9 @@ export default class CreateFactory extends FactoryBase {
     }
   }
 
-  createRun() {
+  createRun () {
     const {collection} = this.props
-    return function run(insertDoc) {
+    return function run (insertDoc) {
       return collection.insert(insertDoc)
     }
   }

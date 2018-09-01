@@ -1,25 +1,51 @@
 <head>
-  <title>tests</title>
+    <title>tests</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
-  {{> info}}
+<div class="container">
+    {{> hello}}
+</div>
 </body>
 
 <template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
-</template>
-
-<template name="info">
-  <h2>Learn Meteor!</h2>
-  <ul>
-    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
-    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
-    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
-    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
-  </ul>
+    <div class="text-right">
+        <button class="btn btn-success create-button">Create</button>
+    </div>
+    {{#if create}}
+        {{> quickForm id="createForm" schema=schema type="normal"}}
+    {{/if}}
+    <table class="table table-hovered">
+        <thead>
+        <tr>
+            <th>title</th>
+            <th>description</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each docs}}
+            {{#if isCurrent this._id}}
+                <tr>
+                    <td colspan="3">
+                {{> quickForm id="updateForm" doc=this schema=schema type="normal"}}
+                    </td>
+                </tr>
+            {{else}}
+            <tr>
+                <td>{{this.title}}</td>
+                <td>{{this.description}}</td>
+                <td>
+                    <a class="update-button" href data-target="{{this._id}}">
+                        <i class="fa fa-fw fa-pencil"></i>
+                    </a>
+                    <a class="delete-button text-danger" href data-target="{{this._id}}">
+                        <i class="fa fa-fw fa-times"></i>
+                    </a>
+                </td>
+            </tr>
+            {{/if}}
+        {{/each}}
+        </tbody>
+    </table>
 </template>
