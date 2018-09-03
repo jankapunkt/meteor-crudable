@@ -1,3 +1,5 @@
+/* global Package */
+
 Package.describe({
   name: 'jkuester:crudable',
   version: '1.0.0',
@@ -8,11 +10,11 @@ Package.describe({
   // By default, Meteor will default to using README.md for documentation.
   // To avoid submitting documentation, set this field to null.
   documentation: 'README.md'
-});
+})
 
-Package.onUse(function(api) {
-  api.versionsFrom('1.5');
-  api.use('ecmascript');
+Package.onUse(function (api) {
+  api.versionsFrom('1.5')
+  api.use('ecmascript')
   api.use('mongo')
   api.use('check')
   api.addFiles([
@@ -20,14 +22,22 @@ Package.onUse(function(api) {
     'FactoryCreate.js',
     'FactoryRead.js',
     'FactoryUpdate.js',
-    'FactoryDelete.js',
+    'FactoryDelete.js'
   ], 'server')
-  api.mainModule('crudable.js', 'server');
-});
+  api.mainModule('crudable.js', 'server')
+})
 
-Package.onTest(function(api) {
-  api.use('ecmascript');
-  api.use('tinytest');
-  api.use('jkuester:crudable');
-  api.mainModule('crudable-tests.js');
-});
+Package.onTest(function (api) {
+  api.use('ecmascript')
+  api.use('meteortesting:mocha@1.0.0')
+  api.use('practicalmeteor:chai')
+  api.use('jkuester:crudable')
+  api.addFiles([
+    'tests/FactoryBase.tests.js',
+    'tests/FactoryCreate.tests.js',
+    'tests/FactoryRead.tests.js',
+    'tests/FactoryUpdate.tests.js',
+    'tests/FactoryDelete.tests.js'
+  ], 'server')
+  api.mainModule('tests/crudable-tests.js')
+})
