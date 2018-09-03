@@ -1,4 +1,3 @@
-import { Mongo } from 'meteor/mongo'
 import { check, Match } from 'meteor/check'
 
 // IMPORT MATCH HELPERS FROM UTILS
