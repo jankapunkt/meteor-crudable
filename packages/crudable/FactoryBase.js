@@ -23,11 +23,11 @@ function checkProps (props) {
  * Base class to be extended by class with focus for each activity of CRUD.
  */
 export default FactoryBase = class FactoryBase {
-  constructor (options = {}) {
+  constructor (options) {
     check(options.collection, Match.Where(itMayeBeCollection))
     check(options.prefix, Match.Maybe(String))
     check(options.isPublic, Match.Maybe(Boolean))
-    check(options.schema, Match.Where(itIsObject))
+    check(options.schema, Match.Where(itMayBeObject))
     check(options.allowAll, Match.Maybe(Boolean))
     check(options.mixins, Match.Where(itMayBeObject))
 
