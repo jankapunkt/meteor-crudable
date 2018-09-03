@@ -6,19 +6,19 @@ import {itExists, itIsObject, itIsCollection, itMayBeObject, itMayeBeCollection}
 
 // PRIVATE STATICS / DEFAULTS
 const _prefix = 'methods'
+const overrideMessage = 'Override this function'
 
 // PRIVATE FUNCTIONS
 function checkProps (props) {
   check(props, Match.Where(itExists))
   check(props.collection, Match.Where(itIsCollection))
-  check(props.prefix, String)
 }
 
 /**
  * Base class to be extended by class with focus for each activity of CRUD.
  */
 export default FactoryBase = class FactoryBase {
-  constructor (options) {
+  constructor (options = {}) {
     check(options.collection, Match.Where(itMayeBeCollection))
     check(options.prefix, Match.Maybe(String))
     check(options.isPublic, Match.Maybe(Boolean))
@@ -53,15 +53,15 @@ export default FactoryBase = class FactoryBase {
   }
 
   createName () {
-    throw new Error('Override this function')
+    throw new Error(overrideMessage)
   }
 
   createValidate () {
-    throw new Error('Override this function')
+    throw new Error(overrideMessage)
   }
 
   createRun () {
-    throw new Error('Override this function')
+    throw new Error(overrideMessage)
   }
 
   // /////////////////////////////////////////////////////////////////////////
