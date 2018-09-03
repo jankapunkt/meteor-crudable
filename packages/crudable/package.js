@@ -2,7 +2,7 @@
 
 Package.describe({
   name: 'jkuester:crudable',
-  version: '1.0.1',
+  version: '1.1.0',
   // Brief, one-line summary of the package.
   summary: 'Configure and create CRUD methods and publictions for your collections.',
   // URL to the Git repository containing the source code for this package.
