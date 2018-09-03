@@ -48,13 +48,13 @@ describe(FactoryBase.name, function () {
       })
     })
 
-    it ('has a default prefix', function () {
+    it('has a default prefix', function () {
       const instance = new FactoryBase()
       assert.isDefined(instance.getPrefix())
       assert.notEqual(instance.getPrefix().length, 0)
     })
 
-    it ('allows to set a prefix', function () {
+    it('allows to set a prefix', function () {
       const instance = new FactoryBase()
       const before = instance.getPrefix()
       const newPrefix = Random.id()
