@@ -4,6 +4,8 @@ import ReadFactory from './FactoryRead'
 import UpdateFactory from './FactoryUpdate'
 import DeleteFactory from './FactoryDelete'
 
+import { itExists, itMayeBeCollection, itMayBeObject, itIsCollection, itIsObject } from './crudable-utils'
+
 /**
  * Wrapper class that holds a factory for each CRUD activity.
  */
@@ -60,3 +62,8 @@ Crudable.from = function from (options, createNow) {
     return factory
   }
 }
+
+/**
+ * Reference to internal utils.
+ */
+Crudable.utils = {itExists, itMayeBeCollection, itMayBeObject, itIsCollection, itIsObject}

@@ -1,13 +1,8 @@
 import { Mongo } from 'meteor/mongo'
 import { check, Match } from 'meteor/check'
 
-// MATCH HELPERS
-const itExists = x => !!x
-const itIsCollection = c => c instanceof Mongo.Collection
-const itMayeBeCollection = c => c ? itIsCollection(c) : true
-
-const itIsObject = o => !!o && typeof o === 'object' && typeof o !== 'function' && !Array.isArray(o) // should suffice
-const itMayBeObject = o => o ? itIsObject(o) : true
+// IMPORT MATCH HELPERS FROM UTILS
+import {itExists, itIsObject, itIsCollection, itMayBeObject, itMayeBeCollection} from './crudable-utils'
 
 // PRIVATE STATICS / DEFAULTS
 const _prefix = 'methods'

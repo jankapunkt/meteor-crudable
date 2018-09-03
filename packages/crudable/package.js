@@ -18,6 +18,7 @@ Package.onUse(function (api) {
   api.use('mongo')
   api.use('check')
   api.addFiles([
+    'crudable-utils.js',
     'FactoryBase.js',
     'FactoryCreate.js',
     'FactoryRead.js',
